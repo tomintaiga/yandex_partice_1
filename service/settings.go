@@ -7,20 +7,14 @@ import (
 	"github.com/tomintaiga/yandex_partice_1/repository"
 )
 
-const (
-	SETTINGS_REPOSITORY_NAME = "settings_repository"
-)
-
-type SettingsServiceConfig map[string]interface{}
-
 type SettingsService struct {
 	repo repository.SettingsRepository
 }
 
 // NewSettingsService create and initialize SettingsService
-func NewSettingsService(cfg ParkingServiceConfig) (*SettingsService, error) {
+func NewSettingsService(repo repository.SettingsRepository) (*SettingsService, error) {
 	return &SettingsService{
-		repo: cfg[SETTINGS_REPOSITORY_NAME].(repository.SettingsRepository),
+		repo: repo,
 	}, nil
 }
 
