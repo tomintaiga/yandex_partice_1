@@ -3,40 +3,38 @@ package models
 import "time"
 
 type Parking struct {
-	ID        uint32
-	Managers  []Manager
-	Spots     []ParkingSpot
-	Employees []Employee
-	Scheme    string
+	Spots  []string
+	Scheme string
 }
 
 type Manager struct {
-	ID    uint32
-	Login string `gorm:"not null"`
+	Login string
 }
 
 type Employee struct {
-	ID         uint32
-	Login      string `gorm:"not null"`
+	Login      string
 	Balance    uint32
 	MonthLimit uint32
-	Bookings   []Booking
-}
-
-type ParkingSpot struct {
-	ID string `gorm:"not null"`
+	Bookings   []string
 }
 
 type BookingStatus string
 
 const (
 	STATUS_CANCELED BookingStatus = "canceled"
+	STATUS_BOOKED   BookingStatus = "booked"
 )
 
 type Booking struct {
-	ID             string `gorm:"not null"`
-	Spot           ParkingSpot
+	ID             string
+	Spot           string
 	Date           time.Time
-	CarPlateNumber string        `gorm:"not null"`
-	Status         BookingStatus // See: https://stackoverflow.com/questions/68637265/how-can-i-add-enum-in-gorm
+	CarPlateNumber string
+	Status         BookingStatus
+}
+
+type NotifyOptions struct {
+	SendTime      time.Time
+	ReceiverEmail string
+	EmailTemplate string
 }

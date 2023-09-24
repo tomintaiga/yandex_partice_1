@@ -1,0 +1,34 @@
+package repository
+
+import (
+	"time"
+
+	"github.com/tomintaiga/yandex_partice_1/models"
+)
+
+type ParkingRepository interface {
+	// SetScheme will set schmete to selected parking
+	SetScheme(parking *models.Parking, scheme []byte) error
+
+	// GetScheme get parking scheme
+	GetScheme(parking *models.Parking) ([]byte, error)
+
+	// GetParkingById return parking object by it's id
+	// If parking with such ID not found, error must be returned
+	GetParkingById(id uint32) (*models.Parking, error)
+
+	// SetParkingSpots set list of parking spots for parking
+	SetParkingSpots(parking *models.Parking, spots []string) error
+
+	// GetParkingSpotsForDate return list of available parking slots for selected date
+	GetParkingSpotsForDate(parking *models.Parking, date time.Time) ([]string, error)
+
+	// BookSlot will reserve selected parking slot for selected day
+	BookSlot(parking *models.Parking, spot string, car_plate string, date time.Time) (models.Booking, error)
+
+	// GetBookingById will find booking with provided id
+	GetBookingById(id string) (models.Booking, error)
+
+	// CancelBooking mark booking with provided ID as canceled and return it
+	CancelBooking(id string) (models.Booking, error)
+}
