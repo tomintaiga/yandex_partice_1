@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/tomintaiga/yandex_partice_1/models"
+	"github.com/tomintaiga/yandex_partice_1/domain"
 	"github.com/tomintaiga/yandex_partice_1/repository"
 )
 
@@ -66,12 +66,12 @@ func (srv *ParkingService) GetAvailableParkingSlots(parking_id uint32, date time
 }
 
 // BookSpot book selected spot for selected date and car
-func (srv *ParkingService) BookSpot(parking_id uint32, spot string, car_plate string, date time.Time) (models.Booking, error) {
+func (srv *ParkingService) BookSpot(parking_id uint32, spot string, car_plate string, date time.Time) (domain.Booking, error) {
 
 	// Check if we can book spot
 	spots, err := srv.repo.GetParkingSpotsForDate(parking_id, date)
 	if err != nil {
-		return models.Booking{}, err
+		return domain.Booking{}, err
 	}
 
 	for _, cur_spot := range spots {
@@ -80,19 +80,19 @@ func (srv *ParkingService) BookSpot(parking_id uint32, spot string, car_plate st
 		}
 	}
 
-	return models.Booking{}, fmt.Errorf("slot occupied")
+	return domain.Booking{}, fmt.Errorf("slot occupied")
 }
 
 // GetBookings will extract booking info for every booking id provided
 // If booking with ID not found, error will be returned
 // TODO: Need optimization
-func (srv *ParkingService) GetBookings(id []string) ([]models.Booking, error) {
-	result := make([]models.Booking, 0)
+func (srv *ParkingService) GetBookings(id []string) ([]domain.Booking, error) {
+	result := make([]domain.Booking, 0)
 
 	for _, cur := range id {
 		booking, err := srv.repo.GetBookingById(cur)
 		if err != nil {
-			return []models.Booking{}, nil
+			return []domain.Booking{}, nil
 		}
 
 		result = append(result, booking)
@@ -101,6 +101,6 @@ func (srv *ParkingService) GetBookings(id []string) ([]models.Booking, error) {
 	return result, nil
 }
 
-func (srv *ParkingService) CancelBooking(id string) (models.Booking, error) {
+func (srv *ParkingService) CancelBooking(id string) (domain.Booking, error) {
 	return srv.repo.CancelBooking(id)
 }

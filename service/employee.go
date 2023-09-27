@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/tomintaiga/yandex_partice_1/models"
+	"github.com/tomintaiga/yandex_partice_1/domain"
 	"github.com/tomintaiga/yandex_partice_1/repository"
 )
 
@@ -17,17 +17,17 @@ func NewEmployeeService(repo repository.EmployeeRepository) (*EmployeeService, e
 }
 
 // GetEmployeeList retrieve employee list from repository
-func (srv *EmployeeService) GetEmployeeList() ([]models.Employee, error) {
+func (srv *EmployeeService) GetEmployeeList() ([]domain.Employee, error) {
 	return srv.repo.GetEmployeeList()
 }
 
 // GetEmployeeInfo retrieve employee info rom repository
-func (srv *EmployeeService) GetEmployeeInfo(login string) (models.Employee, error) {
+func (srv *EmployeeService) GetEmployeeInfo(login string) (domain.Employee, error) {
 	return srv.repo.GetEmployee(login)
 }
 
 // Register add new employee to repository
-func (srv *EmployeeService) Register(login string) (models.Employee, error) {
+func (srv *EmployeeService) Register(login string) (domain.Employee, error) {
 	return srv.repo.Register(login)
 }
 

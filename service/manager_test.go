@@ -3,13 +3,13 @@ package service
 import (
 	"testing"
 
-	"github.com/tomintaiga/yandex_partice_1/models"
+	"github.com/tomintaiga/yandex_partice_1/domain"
 )
 
 type managerTestRepo struct{}
 
-func (srv *managerTestRepo) Register(login string) (models.Manager, error) {
-	return models.Manager{Login: login}, nil
+func (srv *managerTestRepo) Register(login string) (domain.Manager, error) {
+	return domain.Manager{Login: login}, nil
 }
 
 func TestRegisterManager(t *testing.T) {

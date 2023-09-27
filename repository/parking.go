@@ -3,7 +3,7 @@ package repository
 import (
 	"time"
 
-	"github.com/tomintaiga/yandex_partice_1/models"
+	"github.com/tomintaiga/yandex_partice_1/domain"
 )
 
 type ParkingRepository interface {
@@ -15,7 +15,7 @@ type ParkingRepository interface {
 
 	// GetParkingById return parking object by it's id
 	// If parking with such ID not found, error must be returned
-	GetParkingById(id uint32) (*models.Parking, error)
+	GetParkingById(id uint32) (*domain.Parking, error)
 
 	// SetParkingSpots set list of parking spots for parking
 	SetParkingSpots(parking_id uint32, spots []string) error
@@ -24,11 +24,11 @@ type ParkingRepository interface {
 	GetParkingSpotsForDate(parking_id uint32, date time.Time) ([]string, error)
 
 	// BookSlot will reserve selected parking slot for selected day
-	BookSlot(parking_id uint32, spot string, car_plate string, date time.Time) (models.Booking, error)
+	BookSlot(parking_id uint32, spot string, car_plate string, date time.Time) (domain.Booking, error)
 
 	// GetBookingById will find booking with provided id
-	GetBookingById(id string) (models.Booking, error)
+	GetBookingById(id string) (domain.Booking, error)
 
 	// CancelBooking mark booking with provided ID as canceled and return it
-	CancelBooking(id string) (models.Booking, error)
+	CancelBooking(id string) (domain.Booking, error)
 }

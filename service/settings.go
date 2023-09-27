@@ -3,7 +3,7 @@ package service
 import (
 	"time"
 
-	"github.com/tomintaiga/yandex_partice_1/models"
+	"github.com/tomintaiga/yandex_partice_1/domain"
 	"github.com/tomintaiga/yandex_partice_1/repository"
 )
 
@@ -25,7 +25,7 @@ func (srv *SettingsService) SetGlobalBookingLimit(limit uint32) error {
 
 // SetNotificationOptions update global notify options
 func (srv *SettingsService) SetNotificationOptions(send_time time.Time, email string, template string) error {
-	options := models.NotifyOptions{
+	options := domain.NotifyOptions{
 		SendTime:      send_time,
 		ReceiverEmail: email,
 		EmailTemplate: template,
