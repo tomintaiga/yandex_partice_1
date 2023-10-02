@@ -24,7 +24,10 @@ func main() {
 		log.Panic().Err(err).Msg("Can't init manager service")
 	}
 
+	employeeRepo := store.EmployeeStore{}
+
 	app.Post("/api/managers/register", controllers.ManagerRegister(managerService))
+	app.Post("/api/managers/employees", controllers.ManagerRegisterEmployee(&managerRepo, &employeeRepo))
 
 	app.Listen(":8080")
 }

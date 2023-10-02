@@ -1,36 +1,49 @@
 package domain
 
-import "time"
+import (
+	"time"
 
-type Parking struct {
-	Spots  []string
-	Scheme string
-}
-
-type Manager struct {
-	Login string
-}
-
-type Employee struct {
-	Login      string
-	Balance    uint32
-	MonthLimit uint32
-	Bookings   []string
-}
-
-type BookingStatus string
+	"gorm.io/gorm"
+)
 
 const (
-	STATUS_CANCELED BookingStatus = "canceled"
-	STATUS_BOOKED   BookingStatus = "booked"
+	STATUS_CANCELED string = "canceled"
+	STATUS_BOOKED   string = "booked"
 )
 
 type Booking struct {
-	ID             string
-	Spot           string
+	gorm.Model
+	// ID             string `gorm:"primarykey;not null;unique"`
+	Spot           string `gorm:"not null"`
 	Date           time.Time
-	CarPlateNumber string
-	Status         BookingStatus
+	CarPlateNumber string `gorm:"not null"`
+	Status         string `gorm:"not null"`
+}
+
+type Employee struct {
+	gorm.Model
+	Login      string `gorm:"not null"`
+	Balance    uint32
+	MonthLimit uint32
+	Bookings   []Booking `gorm:"foreignKey:ID"`
+}
+
+type Manager struct {
+	gorm.Model
+	Login     string     `gorm:"not null"`
+	Employees []Employee `gorm:"foreignKey:ID"`
+}
+
+type ParkingSpot struct {
+	gorm.Model
+	Name string `gorm:"not null"`
+}
+
+type Parking struct {
+	gorm.Model
+	Spots    []ParkingSpot `gorm:"foreignKey:ID"`
+	Managers []Manager     `gorm:"foreignKey:ID"`
+	Scheme   string
 }
 
 type NotifyOptions struct {

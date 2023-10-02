@@ -3,7 +3,8 @@ package store
 import (
 	"sync"
 
-	"github.com/tomintaiga/yandex_partice_1/models"
+	"github.com/rs/zerolog/log"
+	"github.com/tomintaiga/yandex_partice_1/domain"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -18,21 +19,25 @@ const (
 )
 
 func initialize() {
+	l := log.With().Str("func", "db.initialize").Logger()
+
 	var err error
 	db, err = gorm.Open(sqlite.Open(db_filename), &gorm.Config{})
 	if err != nil {
+		l.Error().Err(err).Msg("Can't open database")
 		panic(err)
 	}
 
 	err = db.AutoMigrate(
-		&models.Booking{},
-		&models.Employee{},
-		&models.Manager{},
-		&models.ParkingSpot{},
-		&models.Parking{},
+		&domain.Booking{},
+		&domain.Employee{},
+		&domain.Manager{},
+		&domain.ParkingSpot{},
+		&domain.Parking{},
 	)
 
 	if err != nil {
+		l.Error().Err(err).Msg("Can't migrate database")
 		panic(err)
 	}
 }

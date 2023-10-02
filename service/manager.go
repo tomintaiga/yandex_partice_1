@@ -21,9 +21,9 @@ func NewManagerService(code string, repo repository.ManagerRepository) (*Manager
 }
 
 // Register add new manager to repository
-func (srv *ManagerService) Register(secret_code string, login string) (domain.Manager, error) {
+func (srv *ManagerService) Register(secret_code string, login string) (*domain.Manager, error) {
 	if secret_code != srv.secret_code {
-		return domain.Manager{}, fmt.Errorf("bad code")
+		return &domain.Manager{}, fmt.Errorf("bad code")
 	}
 
 	return srv.repo.Register(login)
