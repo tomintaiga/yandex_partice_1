@@ -1,10 +1,12 @@
 package store
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/rs/zerolog/log"
 	"github.com/tomintaiga/yandex_partice_1/domain"
+	"gorm.io/gorm"
 )
 
 type EmployeeStore struct{}
@@ -16,20 +18,20 @@ func (s *EmployeeStore) GetEmployeeList() ([]domain.Employee, error) {
 func (s *EmployeeStore) GetEmployee(login string) (domain.Employee, error) {
 	l := log.With().Str("func", "EmployeeStore.GetEmployee").Str("login", login).Logger()
 
-	employee := domain.Employee{Login: login}
-	tx := getDB().Find(&employee)
+	emoloyee := domain.Employee{Login: login}
+	err := getDB().Model(&domain.Employee{}).Preload("Bookings").First(&emoloyee).Error
 
-	if tx.Error != nil {
-		l.Error().Err(tx.Error).Msg("Can't check if manager exist")
-		return domain.Employee{}, tx.Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		l.Error().Err(err).Msg("Can't get employee")
+		return domain.Employee{}, err
 	}
 
-	if tx.RowsAffected == 0 {
-		l.Debug().Msg("Employee not found")
-		return domain.Employee{}, fmt.Errorf("not found")
+	if err != nil {
+		l.Error().Err(err).Msg("Can't get manager")
+		return domain.Employee{}, err
 	}
 
-	return employee, nil
+	return emoloyee, nil
 }
 
 func (s *EmployeeStore) Register(login string) (*domain.Employee, error) {

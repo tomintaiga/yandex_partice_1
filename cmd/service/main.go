@@ -28,6 +28,8 @@ func main() {
 
 	app.Post("/api/managers/register", controllers.ManagerRegister(managerService))
 	app.Post("/api/managers/employees", controllers.ManagerRegisterEmployee(&managerRepo, &employeeRepo))
+	app.Get("/api/managers/employees", controllers.GetManagerEmployees(&managerRepo))
+	app.Get("/api/managers/employees/:login", controllers.GetEmployeeInfo(&managerRepo, &employeeRepo))
 
 	app.Listen(":8080")
 }
